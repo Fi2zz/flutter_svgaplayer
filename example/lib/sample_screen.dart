@@ -82,10 +82,11 @@ class _SampleScreenState extends State<SampleScreen>
             Center(
               child: SVGAPlayer(
                 url: widget.image,
-                controller: controller,
+                // controller: controller,
                 loadingSpinner: () => CupertinoActivityIndicator(),
                 // fit: fit,
-                onLoaded: () => controller.play(),
+                showLoadingSpinner: false,
+                // onLoaded: () => controller.play(),
                 clearsAfterStop: false,
                 clipRect: allowOverflow,
                 filterQuality: filterQuality,
