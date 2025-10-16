@@ -29,7 +29,9 @@ Add **flutter_svgaplayer** to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_svgaplayer: ^latest_version
+  flutter_svgaplayer:
+    git:
+      url: https://github.com/Fi2zz/flutter_svgaplayer.git
 ```
 
 Then, install dependencies:
