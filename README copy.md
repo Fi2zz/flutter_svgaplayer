@@ -4,8 +4,8 @@ A **Flutter package** for parsing and rendering **SVGA animations** efficiently.
 SVGA is a lightweight and powerful animation format used for **dynamic UI effects** in mobile applications.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Fi2zz/flutter_svgaplayer/master/example.gif" width="300"/>
-  <img src="https://raw.githubusercontent.com/Fi2zz/flutter_svgaplayer/master/example1.gif" width="300"/>
+  <img src="https://raw.githubusercontent.com/5alafawyyy/flutter_svga/master/example.gif" width="300"/>
+  <img src="https://raw.githubusercontent.com/5alafawyyy/flutter_svga/master/example1.gif" width="300"/>
 </p>
 
 ---
@@ -295,14 +295,14 @@ SVGAPlayer(
 
 ## 📱 **Supported Platforms**
 
-| Platform   | Supported | Notes        |
-| ---------- | --------- | ------------ |
-| ✅ Android | ✔️ Yes    | Full support |
-| ✅ iOS     | ✔️ Yes    | Full support |
-| ✅ Linux   | ✔️ Yes    | Full support |
-| ✅ Web     | ✔️ Yes    | Full support |
-| ✅ macOS   | ✔️ Yes    | Full support |
-| ✅ Windows | ✔️ Yes    | Full support |
+| Platform   | Supported | Notes                    |
+| ---------- | --------- | ------------------------ |
+| ✅ Android | ✔️ Yes    | Full support             |
+| ✅ iOS     | ✔️ Yes    | Full support             |
+| ✅ Linux   | ✔️ Yes    | Full support             |
+| ✅ Web     | ✔️ Yes    | Full support             |
+| ✅ macOS   | ✔️ Yes    | Full support             |
+| ✅ Windows | ✔️ Yes    | Full support             |
 
 ---
 
@@ -330,19 +330,19 @@ This package is licensed under the **MIT License**. See [`LICENSE`](LICENSE) for
 
 ### SVGAPlayer Properties
 
-| Property          | Type              | Default             | Description                         |
-| ----------------- | ----------------- | ------------------- | ----------------------------------- |
-| `url`             | `String?`         | `null`              | Network URL of the SVGA file        |
-| `controller`      | `SVGAController?` | `null`              | Custom animation controller         |
-| `fit`             | `BoxFit`          | `BoxFit.contain`    | How to fit the animation in the box |
-| `size`            | `Size?`           | `null`              | Custom size for the animation       |
-| `loopCount`       | `int?`            | `0`                 | Number of loops (0 = infinite)      |
-| `autoload`        | `bool?`           | `true`              | Whether to auto-load the animation  |
-| `clearsAfterStop` | `bool`            | `true`              | Clear canvas after animation stops  |
-| `filterQuality`   | `FilterQuality`   | `FilterQuality.low` | Image filter quality                |
-| `clipRect`        | `bool?`           | `null`              | Whether to clip drawing to bounds   |
-| `loadingSpinner`  | `LoadingSpinner?` | `null`              | Custom loading widget               |
-| `onLoaded`        | `VoidCallback?`   | `null`              | Callback when animation loads       |
+| Property         | Type                | Default              | Description                           |
+| ---------------- | ------------------- | -------------------- | ------------------------------------- |
+| `url`            | `String?`           | `null`               | Network URL of the SVGA file         |
+| `controller`     | `SVGAController?`   | `null`               | Custom animation controller           |
+| `fit`            | `BoxFit`            | `BoxFit.contain`     | How to fit the animation in the box   |
+| `size`           | `Size?`             | `null`               | Custom size for the animation         |
+| `loopCount`      | `int?`              | `0`                  | Number of loops (0 = infinite)        |
+| `autoload`       | `bool?`             | `true`               | Whether to auto-load the animation    |
+| `clearsAfterStop`| `bool`              | `true`               | Clear canvas after animation stops    |
+| `filterQuality`  | `FilterQuality`     | `FilterQuality.low`  | Image filter quality                  |
+| `clipRect`       | `bool?`             | `null`               | Whether to clip drawing to bounds     |
+| `loadingSpinner` | `LoadingSpinner?`   | `null`               | Custom loading widget                 |
+| `onLoaded`       | `VoidCallback?`     | `null`               | Callback when animation loads         |
 
 ---
 
