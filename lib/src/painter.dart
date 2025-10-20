@@ -37,7 +37,7 @@ Path dashPath(
 }
 
 /// Enum for dash offset calculation types
-enum _DashOffsetType { Absolute, Percentage }
+enum _DashOffsetType { absolute, percentage }
 
 /// Specifies the starting position of a dash array on a path, either as a
 /// percentage or absolute value.
@@ -50,26 +50,26 @@ class DashOffset {
   /// `percentage` will be clamped between 0.0 and 1.0.
   DashOffset.percentage(double percentage)
     : _rawVal = percentage.clamp(0.0, 1.0),
-      _dashOffsetType = _DashOffsetType.Percentage;
+      _dashOffsetType = _DashOffsetType.percentage;
 
   /// Create a DashOffset that will be measured in terms of absolute pixels
   /// along the length of a [Path] segment.
   const DashOffset.absolute(double start)
     : _rawVal = start,
-      _dashOffsetType = _DashOffsetType.Absolute;
+      _dashOffsetType = _DashOffsetType.absolute;
 
   /// The raw value for the dash offset
   final double _rawVal;
-  
+
   /// The type of dash offset calculation
   final _DashOffsetType _dashOffsetType;
 
   /// Calculates the actual dash offset based on the path length
-  /// 
+  ///
   /// [length] - The length of the path segment
   /// Returns the calculated offset value
   double _calculate(double length) {
-    return _dashOffsetType == _DashOffsetType.Absolute
+    return _dashOffsetType == _DashOffsetType.absolute
         ? _rawVal
         : length * _rawVal;
   }
@@ -104,7 +104,7 @@ class CircularIntervalList<T> {
 
   /// The list of values to cycle through
   final List<T> _vals;
-  
+
   /// Current index in the circular list
   int _idx = 0;
 
@@ -119,7 +119,7 @@ class CircularIntervalList<T> {
 }
 
 /// Custom painter for rendering SVGA animations
-/// 
+///
 /// SVGAPainter is responsible for:
 /// - Rendering SVGA animation frames on a canvas
 /// - Handling transformations, clipping, and scaling
@@ -128,25 +128,25 @@ class CircularIntervalList<T> {
 class SVGAPainter extends CustomPainter {
   /// How the animation should fit within the available space
   final BoxFit fit;
-  
+
   /// The controller that manages the animation state
   final SVGAController controller;
-  
+
   /// Gets the current frame index from the controller
   int get currentFrame => controller.currentFrame;
-  
+
   /// Gets the movie entity containing animation data
   MovieEntity get videoItem => controller.videoItem!;
-  
+
   /// Quality setting for image filtering
   final FilterQuality filterQuality;
 
   /// Whether to clip drawing to canvas bounds
   /// Guaranteed to draw within the canvas bounds when true
   final bool clipRect;
-  
+
   /// Creates an SVGAPainter with the specified configuration
-  /// 
+  ///
   /// [controller] - The animation controller
   /// [fit] - How to fit the animation in the available space
   /// [filterQuality] - Quality of image filtering
@@ -166,25 +166,25 @@ class SVGAPainter extends CustomPainter {
       controller.canvasNeedsClear = false;
       return;
     }
-    
+
     // Skip painting if size is empty or no video data
     if (size.isEmpty || controller.videoItem == null) return;
-    
+
     final params = videoItem.params;
     final Size viewBoxSize = Size(params.viewBoxWidth, params.viewBoxHeight);
     if (viewBoxSize.isEmpty) return;
-    
+
     // Save canvas state before transformations
     canvas.save();
     try {
       final canvasRect = Offset.zero & size;
-      
+
       // Clip to canvas bounds if requested
       if (clipRect) canvas.clipRect(canvasRect);
-      
+
       // Scale and position the animation to fit the canvas
       scaleCanvasToViewBox(canvas, canvasRect, Offset.zero & viewBoxSize);
-      
+
       // Draw all sprites for the current frame
       drawSprites(canvas, size);
     } finally {
@@ -194,10 +194,10 @@ class SVGAPainter extends CustomPainter {
   }
 
   /// Scales and positions the canvas to fit the SVGA viewbox
-  /// 
+  ///
   /// Applies the specified BoxFit mode to scale the animation appropriately
   /// and centers it within the available canvas space.
-  /// 
+  ///
   /// [canvas] - The canvas to transform
   /// [canvasRect] - The available canvas rectangle
   /// [viewBoxRect] - The SVGA animation's viewbox rectangle
@@ -210,7 +210,7 @@ class SVGAPainter extends CustomPainter {
     final Size scaledHalfViewBoxSize =
         Size(viewBoxRect.size.width * sx, viewBoxRect.size.height * sy) / 2.0;
     final Size halfCanvasSize = canvasRect.size / 2.0;
-    
+
     // center align
     final Offset shift = Offset(
       halfCanvasSize.width - scaledHalfViewBoxSize.width,
@@ -221,27 +221,27 @@ class SVGAPainter extends CustomPainter {
   }
 
   /// Draws all sprites for the current animation frame
-  /// 
+  ///
   /// Iterates through all sprites in the animation and renders them
   /// with appropriate transformations, clipping, and effects.
-  /// 
+  ///
   /// [canvas] - The canvas to draw on
   /// [size] - The size of the canvas
   void drawSprites(Canvas canvas, Size size) {
     for (final sprite in videoItem.sprites) {
       final imageKey = sprite.imageKey;
       // var matteKey = sprite.matteKey;
-      
+
       // Skip hidden sprites or sprites without image keys
       if (imageKey.isEmpty ||
           videoItem.dynamicItem.dynamicHidden[imageKey] == true) {
         continue;
       }
-      
+
       final frameItem = sprite.frames[currentFrame];
       final needTransform = frameItem.hasTransform();
       final needClip = frameItem.hasClipPath();
-      
+
       // Apply transformation if needed
       if (needTransform) {
         canvas.save();
@@ -266,7 +266,7 @@ class SVGAPainter extends CustomPainter {
           ]),
         );
       }
-      
+
       // Apply clipping if needed
       if (needClip) {
         canvas.save();
@@ -283,17 +283,17 @@ class SVGAPainter extends CustomPainter {
       final frameAlpha = frameItem.hasAlpha()
           ? (frameItem.alpha * 255).toInt()
           : 255;
-      
+
       // Draw bitmap, shapes, and dynamic content
       drawBitmap(canvas, imageKey, frameRect, frameAlpha);
       drawShape(canvas, frameItem.shapes, frameAlpha);
-      
+
       // Draw dynamic custom content if available
       final dynamicDrawer = videoItem.dynamicItem.dynamicDrawer[imageKey];
       if (dynamicDrawer != null) {
         dynamicDrawer(canvas, currentFrame);
       }
-      
+
       // Restore canvas states
       if (needClip) {
         canvas.restore();
@@ -305,10 +305,10 @@ class SVGAPainter extends CustomPainter {
   }
 
   /// Draws a bitmap image for a sprite
-  /// 
+  ///
   /// Renders either a dynamic replacement image or the original cached bitmap
   /// with the specified frame rectangle and alpha transparency.
-  /// 
+  ///
   /// [canvas] - The canvas to draw on
   /// [imageKey] - The key identifying the image
   /// [frameRect] - The rectangle to draw the image in
@@ -334,25 +334,25 @@ class SVGAPainter extends CustomPainter {
     );
     Rect dstRect = frameRect;
     canvas.drawImageRect(bitmap, srcRect, dstRect, bitmapPaint);
-    
+
     // Draw any dynamic text overlay
     drawTextOnBitmap(canvas, imageKey, frameRect, alpha);
   }
 
   /// Draws vector shapes for a sprite frame
-  /// 
+  ///
   /// Renders all shapes with their fill colors, stroke styles, and effects.
   /// Handles various stroke properties like line caps, joins, and dash patterns.
-  /// 
+  ///
   /// [canvas] - The canvas to draw on
   /// [shapes] - The list of shapes to draw
   /// [frameAlpha] - The frame's alpha transparency value
   void drawShape(Canvas canvas, List<ShapeEntity> shapes, int frameAlpha) {
     if (shapes.isEmpty) return;
-    
+
     for (var shape in shapes) {
       final path = buildPath(shape);
-      
+
       // Apply shape transformation if needed
       if (shape.hasTransform()) {
         canvas.save();
@@ -392,13 +392,13 @@ class SVGAPainter extends CustomPainter {
         );
         canvas.drawPath(path, paint);
       }
-      
+
       // Draw stroke if specified
       final strokeWidth = shape.styles.strokeWidth;
       if (strokeWidth > 0) {
         final paint = Paint();
         paint.style = PaintingStyle.stroke;
-        
+
         // Set stroke color if specified
         if (shape.styles.stroke.isInitialized()) {
           paint.color = Color.fromARGB(
@@ -408,9 +408,9 @@ class SVGAPainter extends CustomPainter {
             (shape.styles.stroke.b * 255).toInt(),
           );
         }
-        
+
         paint.strokeWidth = strokeWidth;
-        
+
         // Set line cap style
         final lineCap = shape.styles.lineCap;
         switch (lineCap) {
@@ -425,7 +425,7 @@ class SVGAPainter extends CustomPainter {
             break;
           default:
         }
-        
+
         // Set line join style
         final lineJoin = shape.styles.lineJoin;
         switch (lineJoin) {
@@ -440,16 +440,16 @@ class SVGAPainter extends CustomPainter {
             break;
           default:
         }
-        
+
         paint.strokeMiterLimit = shape.styles.miterLimit;
-        
+
         // Handle dash patterns
         List<double> lineDash = [
           shape.styles.lineDashI,
           shape.styles.lineDashII,
           shape.styles.lineDashIII,
         ];
-        
+
         if (lineDash[0] > 0 || lineDash[1] > 0) {
           // Draw dashed line
           canvas.drawPath(
@@ -468,7 +468,7 @@ class SVGAPainter extends CustomPainter {
           canvas.drawPath(path, paint);
         }
       }
-      
+
       // Restore transformation if applied
       if (shape.hasTransform()) {
         canvas.restore();
@@ -480,15 +480,15 @@ class SVGAPainter extends CustomPainter {
   static const _validMethods = 'MLHVCSQRZmlhvcsqrz';
 
   /// Builds a Flutter Path from a ShapeEntity
-  /// 
+  ///
   /// Converts SVGA shape data into Flutter Path objects for rendering.
   /// Supports different shape types: SHAPE (SVG path), ELLIPSE, and RECT.
-  /// 
+  ///
   /// [shape] - The shape entity to convert
   /// Returns a Flutter Path object
   Path buildPath(ShapeEntity shape) {
     final path = Path();
-    
+
     if (shape.type == ShapeEntity_ShapeType.SHAPE) {
       // Build path from SVG path data
       final args = shape.shape;
@@ -521,10 +521,10 @@ class SVGAPainter extends CustomPainter {
   }
 
   /// Builds a Flutter Path from SVG path data string
-  /// 
+  ///
   /// Parses SVG path commands and converts them to Flutter Path operations.
   /// Supports caching for performance optimization.
-  /// 
+  ///
   /// [argD] - The SVG path data string
   /// [path] - Optional existing path to modify
   /// Returns a Flutter Path object
@@ -533,16 +533,16 @@ class SVGAPainter extends CustomPainter {
     if (videoItem.pathCache[argD] != null) {
       return videoItem.pathCache[argD]!;
     }
-    
+
     path ??= Path();
-    
+
     // Preprocess the path data string
     final d = argD
         .replaceAllMapped(RegExp('([a-df-zA-Z])'), (match) {
           return "|||${match.group(1)} ";
         })
         .replaceAll(RegExp(","), " ");
-    
+
     // Current position tracking
     var currentPointX = 0.0;
     var currentPointY = 0.0;
@@ -550,17 +550,17 @@ class SVGAPainter extends CustomPainter {
     double? currentPointY1;
     double? currentPointX2;
     double? currentPointY2;
-    
+
     // Process each path command
     d.split("|||").forEach((segment) {
       if (segment.isEmpty) {
         return;
       }
-      
+
       final firstLetter = segment.substring(0, 1);
       if (_validMethods.contains(firstLetter)) {
         final args = segment.substring(1).trim().split(" ");
-        
+
         // Handle different SVG path commands
         if (firstLetter == "M") {
           // Move to absolute
@@ -723,7 +723,7 @@ class SVGAPainter extends CustomPainter {
           path!.close();
         }
       }
-      
+
       // Cache the built path for performance
       videoItem.pathCache[argD] = path!;
     });
@@ -731,10 +731,10 @@ class SVGAPainter extends CustomPainter {
   }
 
   /// Draws dynamic text overlay on a bitmap
-  /// 
+  ///
   /// Renders custom text content that has been set via the dynamic entity.
   /// The text is centered within the frame rectangle.
-  /// 
+  ///
   /// [canvas] - The canvas to draw on
   /// [imageKey] - The key identifying the sprite
   /// [frameRect] - The rectangle of the frame

@@ -15,7 +15,7 @@ class SVGAController extends AnimationController {
   MovieEntity? _videoItem;
 
   /// Flag indicating whether the canvas needs to be cleared on next frame
-  late bool canvasNeedsClear = false;
+  bool canvasNeedsClear = false;
 
   /// Creates a new SVGA controller
   ///
